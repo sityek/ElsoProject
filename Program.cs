@@ -2,44 +2,69 @@
 
 namespace ElsoProject
 {
-    public class Singleton
+    public sealed class Calculate
     {
-        //static referencia egy példányra
-        private static Singleton _instance;
-
-        //a privát konstruktor megtiltja a new operátoros közvetlen példányosítást
-        private Singleton()
+        private Calculate()
         {
-            Console.WriteLine("Singleton példányosítva");
         }
-
-        //Példány lekérdezése
-        //Lehetne akár Property is
-        public static Singleton GetInstance()
+        
+        private static Calculate instance = null;
+        
+        public static Calculate Instance
         {
-            //példányosítás első alkalommal, amikor használjuk
-            if (_instance == null)
+            get
             {
-                _instance = new Singleton();
-            }                
+                if (instance == null)
+                {
+                    instance = new Calculate();
+                }
+                return instance;
+            }
+        }
+        public double ValueOne { get; set; }
 
-            return _instance;
+        public double ValueTwo { get; set; }
+        
+        public double Addition()
+        {
+            return ValueOne + ValueTwo;
+        }
+        
+        public double Subtraction()
+        {
+            return ValueOne - ValueTwo;
+        }
+        
+        public double Multiplication()
+        {
+            return ValueOne * ValueTwo;
+        }
+        
+        public double Division()
+        {
+            return ValueOne / ValueTwo;
         }
     }
 
-        class Program
+    class Program
     {
         static void Main(string[] args)
-            {
-                Singleton test1 = Singleton.GetInstance();
-                Singleton test2 = Singleton.GetInstance();
+        {
+            Calculate.Instance.ValueOne = 10.5;
+            Calculate.Instance.ValueTwo = 5.5;
 
-                if (test1 == test2)
-                {
-                    Console.WriteLine("Tényleg egy példány van belőle!");
-                }
-
-                Console.ReadKey();
-            }
+            Console.WriteLine("Addition : " + Calculate.Instance.Addition());
+            Console.WriteLine("Subtraction : " + Calculate.Instance.Subtraction());
+            Console.WriteLine("Multiplication : " + Calculate.Instance.Multiplication());
+            Console.WriteLine("Division : " + Calculate.Instance.Division());
+            Console.WriteLine("\n----------------------\n");
+            
+            Calculate.Instance.ValueTwo = 10.5;
+            Console.WriteLine("Addition : " + Calculate.Instance.Addition());
+            Console.WriteLine("Subtraction : " + Calculate.Instance.Subtraction());
+            Console.WriteLine("Multiplication : " + Calculate.Instance.Multiplication());
+            Console.WriteLine("Division : " + Calculate.Instance.Division());
+            Console.ReadLine();
         }
+    }
 }
